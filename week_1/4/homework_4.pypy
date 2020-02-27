@@ -1,0 +1,44 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[28]:
+
+
+def sort(data):    
+    for i in range(len(data)):
+        j = i - 1 
+        tmp = data[i]
+        while data[j] > tmp and j >= 0:
+            data[j + 1] = data[j]
+            j -= 1
+
+        data[j + 1] = tmp
+            
+    return data
+
+
+# In[29]:
+
+
+from edx_io import edx_io
+
+arr = []
+
+with edx_io() as io:
+    arr_length = io.next_int()
+    
+    for i in range (0, arr_length):
+        arr.append(io.next_float())
+        
+    arrForSort = arr[:]
+    
+    sort(arrForSort)
+    
+    least = arr.index(arrForSort[0]) + 1
+    largest = arr.index(arrForSort[-1]) + 1    
+    average = arr.index(arrForSort[arr_length // 2]) + 1
+    
+    answear = (least, average, largest)
+    
+    io.writeln(answear)
+
