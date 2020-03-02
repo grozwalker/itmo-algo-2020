@@ -1,0 +1,38 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+from edx_io import edx_io
+
+def swap(arr, first, second):
+    tmp = arr[first]
+    arr[first] = arr[second]
+    arr[second] = tmp
+
+
+data = []
+
+with edx_io() as io:
+    arr_length = io.next_int()
+    for i in range (0, arr_length):
+        data.append(io.next_int())
+
+    startPosition = 0
+
+    while startPosition < arr_length:
+        min = data[startPosition]
+        currentMinPosition = startPosition
+
+        for i in range(startPosition + 1, arr_length):
+            if data[i] < min:
+                min = data[i]
+                currentMinPosition = i
+
+        if startPosition != currentMinPosition:
+            swap(data, startPosition, currentMinPosition)
+            io.writeln(f'Swap elements at indices {startPosition + 1} and {currentMinPosition + 1}.')
+
+        startPosition += 1
+
+    io.writeln('No more swaps needed.')
+    io.writeln(data)
+
