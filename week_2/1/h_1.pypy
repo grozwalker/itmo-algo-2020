@@ -1,0 +1,61 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+
+
+def merge(first, second):
+    i = 0
+    j = 0
+    result = []
+    
+    first_len = len(first)
+    second_len = len(second)
+    
+    while i < first_len or j < second_len:
+        if j == second_len or (i < first_len and first[i] < second[j]):
+            result.append(first[i])
+            i += 1
+        else:
+            result.append(second[j])
+            j += 1
+            
+    return result
+            
+
+def merge_sort(data, l, r, io):
+    
+    if (r - l) == 0:
+        return [data[l]]
+    
+    if (r - l) == 1:
+        merged_data = merge([data[l]], [data[r]])
+        io.writeln(f'{l + 1} {r + 1} {merged_data[0]} {merged_data[1]}')
+
+        return merged_data
+    
+    middle = (r - l) // 2
+    
+    left_part = merge_sort(data, l, l + middle, io)
+    right_part = merge_sort(data, l + middle + 1, r, io)
+    
+    merged_data = merge(left_part, right_part)
+    
+    io.writeln(f'{l + 1} {r + 1} {merged_data[0]} {merged_data[-1]}')
+    
+    return merged_data
+    
+
+
+from edx_io import edx_io
+
+data = []
+
+with edx_io() as io:
+    data_length = io.next_int()
+    for i in range (0, data_length):
+        data.append(io.next_int())
+    
+    result = merge_sort(data, 0 , data_length - 1, io)
+    
+    io.writeln(result)
+    
