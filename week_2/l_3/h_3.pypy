@@ -1,0 +1,24 @@
+from edx_io import edx_io
+
+def getList(result, n):
+    if n == 1:
+        return [1]
+    if n == 2:
+        return [1, 2]
+   
+    key = (n - 1) // 2    
+    tmp = result[key]
+    
+    result[key] = n
+    result.append(tmp)
+        
+    return result
+
+with edx_io() as io:
+    result = []
+    data_length = io.next_int()
+    
+    for i in range(1, data_length + 1):
+        result = getList(result, i)
+    
+    io.writeln(result)

@@ -1,3 +1,4 @@
 .ipynb_checkpoints
 ..gitignore.swp
 __pycache__/
+Pypy3/

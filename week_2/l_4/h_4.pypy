@@ -1,0 +1,43 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+from edx_io import edx_io
+
+data = []
+
+def check(arr, reach):
+    sorted_arr = sorted(arr)
+    length = len(arr)
+    can_sorted = True
+    
+    for k in range(0, reach):
+        tmp = {}
+        tmp_sorted = {}
+        
+        for i in range(k, length, reach):
+            tmp[arr[i]] = True
+            tmp_sorted[sorted_arr[i]] = True
+            
+        for m in tmp:
+            if m not in tmp_sorted:
+                can_sorted = False
+                
+    return can_sorted
+
+with edx_io() as io:
+    data = []
+    data_length = io.next_int()
+    k = io.next_int()
+    
+    if k == 1:
+        io.writeln('YES')
+    else:    
+        for i in range(0, data_length):
+            data.append(io.next_int()) 
+
+        can_sorted = check(data, k)
+
+        if can_sorted:
+            io.writeln('YES')
+        else:
+            io.writeln('NO')
