@@ -1,0 +1,87 @@
+def digital_sort(A):
+    result = A
+    max_el = 0;
+    length = 0
+    
+    for el in A:
+        length += 1
+        if el > max_el:
+            max_el = el
+            
+    
+    digits = len(hex(max_el)[2:])
+
+    tmp_sorted = [None] * (len(A) + 1)
+    
+    for d in range(digits):
+        result = counting_sort(result, tmp_sorted, d)
+
+    return result
+
+def counting_sort(A, tmp_sorted, d):
+    scope = 16
+    result = []
+    
+    offsets = [0] * scope
+    C = [0] * scope
+    
+    for x in A:        
+        if x < (scope * d):
+            result.append(x)
+        else:
+            offset = (x >> (4 * d)) & (scope - 1)
+            #offset = x % (10 ** (d + 1)) // (10 ** d)
+            C[offset] += 1
+        
+    counting = 0
+    for i in range(scope):
+        tmp_sum = C[i] + counting
+        offsets[i] = tmp_sum
+        counting = tmp_sum
+        
+
+    for i in range(len(A) - 1, -1, -1):
+        if A[i] >= (scope * d):
+            key = (A[i] >> (4 * d)) & (scope - 1)
+            #key = A[i] % (10 ** (d + 1)) // (10 ** d)
+            if offsets[key] != 0:
+                tmp_sorted[offsets[key]] = A[i]
+                offsets[key] -= 1
+    
+    for i in range(len(tmp_sorted)):
+        if tmp_sorted[i] != None:
+            result.append(tmp_sorted[i])
+            
+        tmp_sorted[i] = None
+
+    return result
+
+
+from edx_io import edx_io
+
+A = []
+B = []
+AB = []
+result = 0
+
+with edx_io() as io:
+    n = io.next_int()
+    m = io.next_int()
+    length = n * m
+    
+    for i in range (0, n):
+        A.append(io.next_int())
+        
+    for i in range (0, m):
+        B.append(io.next_int())
+    
+    for a in A:
+        for b in B:
+            AB.append(a * b)
+            
+    sorted_ab = digital_sort(AB)
+
+    for i in range(0, length, 10):
+        result += sorted_ab[i]
+
+    io.writeln(result)  
