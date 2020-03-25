@@ -1,33 +1,24 @@
-def digital_sort(A):
-    result = A
-    max_el = 0;
-    length = 0
-    
-    for el in A:
-        length += 1
-        if el > max_el:
-            max_el = el
-            
-    
-    digits = len(hex(max_el)[2:])
-
-    tmp_sorted = [None] * (len(A) + 1)
+def digital_sort(A):          
+    digits = len(hex(max(A))[2:])
     
     for d in range(digits):
-        result = counting_sort(result, tmp_sorted, d)
+        tmp_sorted = A[:]
+        A = counting_sort(A, tmp_sorted, d)
 
-    return result
+    return A
+
 
 def counting_sort(A, tmp_sorted, d):
     scope = 16
-    result = []
+    current_place = 0
     
-    offsets = [0] * scope
+    offsets = [None] * scope
     C = [0] * scope
     
-    for x in A:        
+    for x in A: 
         if x < (scope * d):
-            result.append(x)
+            tmp_sorted[current_place] = x
+            current_place += 1
         else:
             offset = (x >> (4 * d)) & (scope - 1)
             #offset = x % (10 ** (d + 1)) // (10 ** d)
@@ -45,16 +36,10 @@ def counting_sort(A, tmp_sorted, d):
             key = (A[i] >> (4 * d)) & (scope - 1)
             #key = A[i] % (10 ** (d + 1)) // (10 ** d)
             if offsets[key] != 0:
-                tmp_sorted[offsets[key]] = A[i]
                 offsets[key] -= 1
-    
-    for i in range(len(tmp_sorted)):
-        if tmp_sorted[i] != None:
-            result.append(tmp_sorted[i])
-            
-        tmp_sorted[i] = None
+                tmp_sorted[current_place + offsets[key]] = A[i]
 
-    return result
+    return tmp_sorted
 
 
 from edx_io import edx_io
